@@ -227,7 +227,7 @@ def get_linux_setup():
             with open(input[0] + "/manufacturer", 'r') as f:
                 manufacturer = f.readline()
                 f.close()
-            if "Emotiv Systems" in manufacturer:
+            if "Emotiv" in manufacturer:
                 with open(input[0] + "/serial", 'r') as f:
                     serial = f.readline().strip()
                     f.close()
@@ -261,6 +261,8 @@ def hid_enumerate():
 def is_old_model(serial_number):
         if "GM" in serial_number[-2:]:
                 return False
+        else "UD" in serial_number[-2:]:
+                return False
         return True
 
 
@@ -283,8 +285,8 @@ class EmotivPacket(object):
             g_battery = battery_values[str(self.battery)]
             self.counter = 128
         self.sync = self.counter == 0xe9
-        self.gyro_x = ord(data[29]) - 106
-        self.gyro_y = ord(data[30]) - 105
+        self.gyro_x = ord(data[29]) - 127
+        self.gyro_y = ord(data[30]) - 127
         sensors['X']['value'] = self.gyro_x
         sensors['Y']['value'] = self.gyro_y
         for name, bits in sensor_bits.items():
@@ -353,7 +355,7 @@ class EmotivPacket(object):
             self.gyro_x,
             self.gyro_y)
 
-
+# Keep is_research=False even if EPOC+ is research
 class Emotiv(object):
     """
     Receives, decrypts and stores packets received from Emotiv Headsets.
@@ -410,7 +412,7 @@ class Emotiv(object):
         devices = []
         try:
             for device in hid.find_all_hid_devices():
-                if device.vendor_id != 0x21A1 and device.vendor_id != 0xED02:
+                if device.vendor_id != 0x1234 and device.vendor_id != 0xED02:
                     continue
                 if device.product_name == 'Brain Waves':
                     devices.append(device)
@@ -428,6 +430,11 @@ class Emotiv(object):
                     self.serial_number = device.serial_number
                     device.set_raw_data_handler(self.handler)
                 elif device.product_name == 'Emotiv RAW DATA':
+                    devices.append(device)
+                    device.open()
+                    self.serial_number = device.serial_number
+                    device.set_raw_data_handler(self.handler)
+                elif device.product_name == 'EEG Signals':
                     devices.append(device)
                     device.open()
                     self.serial_number = device.serial_number
