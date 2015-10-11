@@ -63,6 +63,8 @@ Python
 * (OS X) cython-hidapi - https://github.com/gbishop/cython-hidapi
 * pycrypto - https://www.dlitz.net/software/pycrypto/
 * gevent - http://gevent.org
+* greenlet
+* pygame (render.py)
 * realpath - http://?   sudo apt-get install realpath
 
 C Language
@@ -83,28 +85,7 @@ See emokitd.c example
 Python library
 --------------
 
-  Code:
-  
-    import emotiv
-    import platform
-    if platform.system() == "Windows":
-        import socket
-    import gevent
-
-    if __name__ == "__main__":
-      headset = emotiv.Emotiv()    
-      gevent.spawn(headset.setup)
-      gevent.sleep(0)
-      try:
-        while True:
-          packet = headset.dequeue()
-          print packet.gyro_x, packet.gyro_y
-          gevent.sleep(0)
-      except KeyboardInterrupt:
-        headset.close()
-      finally:
-        headset.close()
-
+See example.py
 
 Bindings
 ========
