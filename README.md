@@ -16,12 +16,24 @@ Description
 ===========
 
 Emokit is a set of language for user space access to the raw stream
-data from the Emotiv EPOC headset. Note that this will not give you
+data from the Emotiv EPOC+ headset. Note that this will not give you
 processed data (i.e. anything available in the Emo Suites in the
 software), just the raw sensor data.
 
 The C library is backed by hidapi, and should work on any platform
 that hidapi also works on.
+
+EPOC+ vs EPOC
+-------------
+This fork is done for the EPOC+:
+* Sample Rate: EPOC: 128Hz vs. EPOC+ : 128Hz or 256Hz
+* Resolution: EPOC: 14bit(0.51µV) vs. EPOC+ : 14bit(0.51µV) or 16bit(0.31µV)
+* Sensors: EPOC: 2-axis gyro vs. EPOC+: 9 axis sensor (3x gyro, 3x accelerometer, 3x magnetometer)
+* VID: 1234 / PID: ED02
+* ID 1234:ed02 Brain Actuated Technologies Emotiv EPOC Developer Headset Wireless Dongle
+* iManufacturer           1 Emotiv
+* iProduct                2 Brain Computer Interface USB Receiver/Dongle
+* iInterface              4 EEG Signals
 
 Information
 ===========
