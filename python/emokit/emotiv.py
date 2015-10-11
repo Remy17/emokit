@@ -261,7 +261,7 @@ def hid_enumerate():
 def is_old_model(serial_number):
         if "GM" in serial_number[-2:]:
                 return False
-        else "UD" in serial_number[-2:]:
+        elif "UD" in serial_number[-2:]:
                 return False
         return True
 
